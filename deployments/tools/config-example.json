@@ -1,0 +1,7 @@
+{
+	"debug": false,
+	"pprof_path": "/debug/pprof",
+	"log_dir":"./log",
+	"server_port": "8888",
+	"main_db":"user:password@tcp(host:port)/dbname?charset=utf8mb4&parseTime=True&loc=Local"
+}
