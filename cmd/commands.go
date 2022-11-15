@@ -11,6 +11,7 @@ import (
 )
 
 var cmds = map[string]utils.Command{
+	"echo_server": NewEchoServerCommand(),
 	"file_server": NewFileServerCommand(),
 	"api_serverr": NewApiServerCommand(),
 }

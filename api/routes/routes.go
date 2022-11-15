@@ -12,6 +12,9 @@ var Module = fx.Options(
 
 	// file server
 	fx.Provide(NewFileRoutes),
+
+	// echo server
+	fx.Provide(NewEchoRoutes),
 )
 
 // ApiRoutes contains multiple routes

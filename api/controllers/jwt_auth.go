@@ -30,16 +30,11 @@ func (jwt *JWTAuthController) SignIn(c *gin.Context) {
 	// Can add the logic later if necessary.
 	user, _ := jwt.userService.GetOneUser(uint(1))
 	token := jwt.service.CreateToken(user)
-	c.JSON(200, gin.H{
-		"message": "logged in successfully",
-		"token":   token,
-	})
+	OnSuccess(c, token)
 }
 
 // Register registers user
 func (jwt *JWTAuthController) Register(c *gin.Context) {
 	logging.Info("Register route called")
-	c.JSON(200, gin.H{
-		"message": "register route",
-	})
+	OnSuccess(c, "register route")
 }

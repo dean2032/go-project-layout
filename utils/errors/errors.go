@@ -316,12 +316,12 @@ func stackFromError(err error) *stack {
 	return nil
 }
 
-// NewCodeError 新建一个固定错误码的error
+// NewCodeError returns an error with a specified code
 func NewCodeError(code int, desc string) *CodeError {
 	return &CodeError{code: code, desc: desc}
 }
 
-// CodeErrorf Errorf的带CodeError版本
+// CodeErrorf return an error with an formated message
 func CodeErrorf(err *CodeError, format string, args ...interface{}) error {
 	return &withStack{
 		error: &withMessage{
@@ -332,7 +332,9 @@ func CodeErrorf(err *CodeError, format string, args ...interface{}) error {
 	}
 }
 
-// CodeWrap Wrap的带CodeError版本, 使用codeErr作为cause，使用err的stack
+// CodeWrap returns an error annotating code err with a stack trace
+// at the point Wrap is called, and the supplied message.
+// If err is nil, Wrap returns nil.
 func CodeWrap(codeErr *CodeError, err error, msg string) error {
 	if err == nil {
 		return nil
@@ -348,7 +350,9 @@ func CodeWrap(codeErr *CodeError, err error, msg string) error {
 	}
 }
 
-// CodeWrapf Wrafp的带CodeError版本, 使用codeErr作为cause，使用err的stack
+// CodeWrapf returns an error annotating code err with a stack trace
+// at the point Wrapf is called, and the format specifier.
+// If err is nil, Wrapf returns nil.
 func CodeWrapf(codeErr *CodeError, err error, format string, args ...interface{}) error {
 	if err == nil {
 		return nil

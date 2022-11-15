@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"net/http"
 	"strconv"
 
 	"github.com/dean2032/go-project-layout/constants"
@@ -31,25 +30,18 @@ func (u *UserController) GetOneUser(c *gin.Context) {
 	id, err := strconv.Atoi(paramID)
 	if err != nil {
 		logging.Error(err.Error())
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err,
-		})
+		OnError(c, err)
 		return
 	}
 	user, err := u.service.GetOneUser(uint(id))
 
 	if err != nil {
 		logging.Error(err.Error())
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
+		OnError(c, err)
 		return
 	}
 
-	c.JSON(200, gin.H{
-		"data": user,
-	})
-
+	OnSuccess(c, user)
 }
 
 // GetUser gets the user
@@ -58,7 +50,7 @@ func (u *UserController) GetUser(c *gin.Context) {
 	if err != nil {
 		logging.Error(err.Error())
 	}
-	c.JSON(200, gin.H{"data": users})
+	OnSuccess(c, users)
 }
 
 // SaveUser saves the user
@@ -68,26 +60,22 @@ func (u *UserController) SaveUser(c *gin.Context) {
 
 	if err := c.ShouldBindJSON(&user); err != nil {
 		logging.Error(err.Error())
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
+		OnError(c, err)
 		return
 	}
 
 	if err := u.service.WithTx(txHandle).CreateUser(user); err != nil {
 		logging.Error(err.Error())
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
+		OnError(c, err)
 		return
 	}
 
-	c.JSON(200, gin.H{"data": "user created"})
+	OnSuccess(c, nil)
 }
 
 // UpdateUser updates user
 func (u *UserController) UpdateUser(c *gin.Context) {
-	c.JSON(200, gin.H{"data": "user updated"})
+	OnSuccess(c, nil)
 }
 
 // DeleteUser deletes user
@@ -97,19 +85,15 @@ func (u *UserController) DeleteUser(c *gin.Context) {
 	id, err := strconv.Atoi(paramID)
 	if err != nil {
 		logging.Error(err.Error())
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err,
-		})
+		OnError(c, err)
 		return
 	}
 
 	if err := u.service.DeleteUser(uint(id)); err != nil {
 		logging.Error(err.Error())
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
+		OnError(c, err)
 		return
 	}
 
-	c.JSON(200, gin.H{"data": "user deleted"})
+	OnSuccess(c, nil)
 }
